@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../../common/header/Header';
 
 /**
  * @Author Vijay Mamoria
@@ -6,7 +7,11 @@ import React, { Component } from 'react';
  */
 class Login extends Component {
     render() {
-        return (<div>Login Page</div>);
+        return (
+            <div>
+                <Header />
+                Login Page
+            </div>);
     }
 }
 
