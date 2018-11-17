@@ -9,7 +9,12 @@ import Avatar from '@material-ui/core/Avatar';
 import GridList from '@material-ui/core/GridList';
 import { Typography, FormControl, InputLabel, Input, Button, GridListTile } from '@material-ui/core';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import Favorite from '@material-ui/icons/Favorite';
 
+/**
+ * Home page
+ * @Author Sundar Srinivasan
+ */
 
 const styles = theme => ({
     root: {
@@ -51,13 +56,26 @@ class Home extends Component {
         super();
         this.state = {
             userImages: [],
+            likes: 0,
+            likeIcon: <FavoriteBorder />,
+            comments: ""
         }
     }
-        
-    async componentWillMount() {
+    
+    //Using Fetch with async and await to get json data
+    async componentDidMount() {
         const response = await fetch(`https://api.instagram.com/v1/users/self/media/recent?access_token=9204272757.f8594e7.25756c2b57804b6b8b1cb08b48e45566`);
         const json = await response.json();
         this.setState({ userImages: json.data});
+    }
+
+    likesClickHandler = () => {
+        this.setState({likes: 1});
+        this.setState({likeIcon: <Favorite color="secondary"/>})
+    }
+
+    commentAddHandler = (e) => {
+        this.setState({comments: e})
     }
 
     render() {
@@ -71,7 +89,7 @@ class Home extends Component {
                     <GridList cellHeight={"auto"} className={classes.gridListMain} cols={2}>
                         {this.state.userImages.map(userImages => (
                             <GridListTile>
-                                <Card className="image-post">
+                                <Card key={userImages.id} className="image-post">
                                     <CardHeader 
                                         avatar={
                                             <Avatar className={classes.avatar}>
@@ -79,26 +97,24 @@ class Home extends Component {
                                             </Avatar>
                                         }
                                         title={userImages.user.username}
-                                        subheader={new Date(userImages.created_time).toDateString()}
-                                    />
+                                        subheader={new Date(userImages.created_time * 1000).toLocaleString()}
+                                        />
                                     <CardContent className="image-post-image">
                                         <img width="540px" height="540px" src={userImages.images.standard_resolution.url} />
                                         <hr />
                                         <Typography>
-                                            <p>{"userImages.caption.text"}</p>
-                                            {/* {this.state.imageTags.map(tag => (
-                                                <p>{tag + " "}</p>
-                                            ))} */}
+                                            <p>{userImages.caption.text}</p>
+                                            {userImages.tags.map(tags =>(
+                                                <span className="tags">#{tags} </span>
+                                            ))}
                                         </Typography>
-                                        <div>
-                                            <p>
-                                                <FavoriteBorder />
-                                                {userImages.likes.count}  likes
-                                            </p>
+                                        <div onClick={() => this.likesClickHandler()}>
+                                                {this.state.likeIcon}
+                                                {userImages.likes.count + this.state.likes}   likes
                                         </div>
                                         <div>
                                             <p>
-                                                <b>{userImages.user.username}: </b>Whatever Comment
+                                                <b>{userImages.user.username}: </b> {this.state.comments}
                                             </p>
                                         </div>
                                         <div>
@@ -107,7 +123,7 @@ class Home extends Component {
                                                 <Input id="addAComment" />
                                             </FormControl>
                                             <FormControl>
-                                                <Button variant="contained" color="primary">
+                                                <Button variant="contained" color="primary" onClick={() => this.commentAddHandler(document.getElementById('addAComment').value)}>
                                                     ADD
                                                 </Button>
                                             </FormControl>
