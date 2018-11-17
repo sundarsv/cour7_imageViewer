@@ -14,16 +14,14 @@
     color: red;
 }
 
-.flex-container{
-    margin: 16px;
-    width: 80px;
-    display: flex;
-    justify-content: center;
-    align-content: center;
+.login{
+    text-align: center;
+    margin-top: 16px;
 }
 
-.center {
-  padding-top:20px;
-  width:24%;
-  justify-content: center;
+.cardStyle {
+    width: 280px;
+    padding: 32px 64px 32px 64px;
+    margin: auto;
+    text-align: left;
 }
