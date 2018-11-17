@@ -1,0 +1,29 @@
+.tabs{
+    margin-bottom: 20px;
+}
+
+.dispNone{
+    display: none;
+}
+
+.dispBlock{
+    display: block;
+}
+
+.red{
+    color: red;
+}
+
+.flex-container{
+    margin: 16px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.center {
+  padding-top:20px;
+  width:24%;
+  justify-content: center;
+}
