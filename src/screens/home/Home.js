@@ -32,6 +32,10 @@ const styles = theme => ({
       height: 0,
       paddingTop: '56.25%', // 16:9
     },
+    title: {
+        fontWeight: 'strong',
+        color: 'red',
+    },
     actions: {
       display: 'flex',
     },
@@ -90,7 +94,7 @@ class Home extends Component {
                         {this.state.userImages.map(userImages => (
                             <GridListTile>
                                 <Card key={userImages.id} className="image-post">
-                                    <CardHeader 
+                                    <CardHeader className="card-header"
                                         avatar={
                                             <Avatar className={classes.avatar}>
                                             <img src={userImages.user.profile_picture} alt={userImages.user.username}/>
@@ -99,8 +103,8 @@ class Home extends Component {
                                         title={userImages.user.username}
                                         subheader={new Date(userImages.created_time * 1000).toLocaleString()}
                                         />
-                                    <CardContent className="image-post-image">
-                                        <img width="540px" height="540px" src={userImages.images.standard_resolution.url} />
+                                    <CardContent>
+                                        <img src={userImages.images.standard_resolution.url} />
                                         <hr />
                                         <Typography>
                                             <p>{userImages.caption.text}</p>
