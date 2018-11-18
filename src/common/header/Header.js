@@ -36,8 +36,11 @@ class Header extends Component {
      * Clear Session Storage on Logout.
      */
     onLogoutClickHandler = () => {
-        sessionStorage.setItem("access-token", null);
-        sessionStorage.setItem("uuid", null);
+        sessionStorage.removeItem("uuid");
+        sessionStorage.removeItem("access-token");
+        this.setState({
+            loggedIn: false
+        });
     }
 
     render() {
