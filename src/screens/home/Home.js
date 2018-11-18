@@ -10,6 +10,7 @@ import GridList from '@material-ui/core/GridList';
 import { Typography, FormControl, InputLabel, Input, Button, GridListTile } from '@material-ui/core';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Favorite from '@material-ui/icons/Favorite';
+import { element } from 'prop-types';
 
 /**
  * Home page
@@ -60,16 +61,21 @@ class Home extends Component {
         super();
         this.state = {
             userImages: [],
-            likeIcon: <FavoriteBorder />,
-            comments: "",
         }
     }
     
     //Using Fetch with async and await to get json data
-    async componentDidMount() {
+    async componentWillMount() {
         const response = await fetch(`https://api.instagram.com/v1/users/self/media/recent?access_token=9204272757.f8594e7.25756c2b57804b6b8b1cb08b48e45566`);
         const json = await response.json();
         this.setState({ userImages: json.data});
+        // Running a for loop to add likes icon to every item in the array
+        var userImageLikes = this.state.userImages.slice(0)
+        userImageLikes.forEach(element => {
+            element.likesIcon = <FavoriteBorder />;
+            element.commentsText = "";
+        });
+        this.setState({userImages: userImageLikes})       
     }
 
     //Finding specific for handling this app's likes and comments
@@ -84,23 +90,42 @@ class Home extends Component {
 
     likesClickHandler = (id) => {
         var userImageLikes = this.state.userImages.slice(0)
-        for (var i=0; i<userImageLikes.length; i++) {
-            if (userImageLikes[i].id === id) {
-                    userImageLikes[i].likes.count = userImageLikes[i].likes.count+1 ;
-                    this.setState({userImages: userImageLikes})
+        if (userImageLikes.likesIcon === <Favorite color="secondary"/>) {   
+            for (var i=0; i<userImageLikes.length; i++) {
+                if (userImageLikes[i].id === id) {
+                        userImageLikes[i].likes.count = userImageLikes[i].likes.count-1 ;
+                        userImageLikes[i].likesIcon = <FavoriteBorder />
+                        this.setState({userImages: userImageLikes})
+                }
+            }
+            
+        } else {
+            for (var i=0; i<userImageLikes.length; i++) {
+                if (userImageLikes[i].id === id) {
+                        userImageLikes[i].likes.count = userImageLikes[i].likes.count+1 ;
+                        userImageLikes[i].likesIcon = <Favorite color="secondary"/>
+                        this.setState({userImages: userImageLikes})
+                }
             }
         }
-        this.setState({likeIcon: <Favorite color="secondary"/>})
     }
 
-    commentAddHandler = (e) => {
-        this.setState({comments: e})
+    commentAddHandler = (id, e) => {
+        console.log(id);
+        console.log(e);
+        var userImageComments = this.state.userImages.slice(0)
+        for (var i=0; i<userImageComments.length; i++) {
+            if (userImageComments[i].id === id) {
+                userImageComments[i].commentsText = userImageComments[i].user.username + ": " + e;
+                console.log(userImageComments[i].commentsText);
+                this.setState({userImages: userImageComments})
+                console.log(userImageComments[i].commentsText);
+            }
+        }
     }
 
     render() {
         const { classes } = this.props;
-        console.log(this.state.userImages);
-
         return (
             <div>
                 <Header />
@@ -128,12 +153,12 @@ class Home extends Component {
                                             ))}
                                         </Typography>
                                         <div onClick={() => this.likesClickHandler(userImages.id)}>
-                                                {this.state.likeIcon}
+                                                {userImages.likesIcon}
                                                 {userImages.likes.count}   likes
                                         </div>
                                         <div>
                                             <p>
-                                                <b>{userImages.user.username}: </b> {this.state.comments}
+                                                {userImages.commentsText}
                                             </p>
                                         </div>
                                         <div>
@@ -142,7 +167,7 @@ class Home extends Component {
                                                 <Input id="addAComment" />
                                             </FormControl>
                                             <FormControl>
-                                                <Button variant="contained" color="primary" onClick={() => this.commentAddHandler(document.getElementById('addAComment').value)}>
+                                                <Button variant="contained" color="primary" onClick={() => this.commentAddHandler(userImages.id, document.getElementById('addAComment').value)}>
                                                     ADD
                                                 </Button>
                                             </FormControl>
