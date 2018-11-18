@@ -38,4 +38,6 @@
 
 .disp-block{
     display: block;
+    border-radius: 4px;
+    background-color: #c0c0c0;
 }

@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import './Header.css';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import { Link } from 'react-router-dom';
 
 class Header extends Component {
 
@@ -32,17 +32,12 @@ class Header extends Component {
         this.setState({ displayMenu: "disp-block" });
     }
 
-    onMyAccountClickHandler = () => {
-        this.props.history.push("/profile");
-    }
-
     /**
      * Clear Session Storage on Logout.
      */
     onLogoutClickHandler = () => {
         sessionStorage.setItem("access-token", null);
         sessionStorage.setItem("uuid", null);
-        this.props.history.push("/");
     }
 
     render() {
@@ -64,11 +59,15 @@ class Header extends Component {
                                     </IconButton>
                                     <div className={this.state.displayMenu}>
                                         <MenuItem key="1" value="My Account">
-                                            <ListItemText primary="My Account" onClick={this.onMyAccountClickHandler} />
+                                            <Link to="/profile">
+                                                <ListItemText primary="My Account" />
+                                            </Link>
                                         </MenuItem>
                                         <hr />
                                         <MenuItem key="2" value="Logout">
-                                            <ListItemText primary="Logout" onClick={this.onLogoutClickHandler} />
+                                            <Link to="/">
+                                                <ListItemText primary="Logout" onClick={this.onLogoutClickHandler} />
+                                            </Link>
                                         </MenuItem>
                                     </div>
                                 </div>
