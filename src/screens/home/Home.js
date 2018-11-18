@@ -10,7 +10,6 @@ import GridList from '@material-ui/core/GridList';
 import { Typography, FormControl, InputLabel, Input, Button, GridListTile } from '@material-ui/core';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Favorite from '@material-ui/icons/Favorite';
-import { element } from 'prop-types';
 
 /**
  * Home page
