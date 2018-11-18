@@ -60,9 +60,8 @@ class Home extends Component {
         super();
         this.state = {
             userImages: [],
-            likes: 0,
             likeIcon: <FavoriteBorder />,
-            comments: ""
+            comments: "",
         }
     }
     
@@ -73,8 +72,24 @@ class Home extends Component {
         this.setState({ userImages: json.data});
     }
 
-    likesClickHandler = () => {
-        this.setState({likes: 1});
+    //Finding specific for handling this app's likes and comments
+    findIndexById (id) {
+        for (var i=0; i<this.state.userImages.length(); i++) {
+            if (this.state.userImages[i].id === id) {
+                return i;
+            }
+        }
+    }
+
+
+    likesClickHandler = (id) => {
+        var userImageLikes = this.state.userImages.slice(0)
+        for (var i=0; i<userImageLikes.length; i++) {
+            if (userImageLikes[i].id === id) {
+                    userImageLikes[i].likes.count = userImageLikes[i].likes.count+1 ;
+                    this.setState({userImages: userImageLikes})
+            }
+        }
         this.setState({likeIcon: <Favorite color="secondary"/>})
     }
 
@@ -112,9 +127,9 @@ class Home extends Component {
                                                 <span className="tags">#{tags} </span>
                                             ))}
                                         </Typography>
-                                        <div onClick={() => this.likesClickHandler()}>
+                                        <div onClick={() => this.likesClickHandler(userImages.id)}>
                                                 {this.state.likeIcon}
-                                                {userImages.likes.count + this.state.likes}   likes
+                                                {userImages.likes.count}   likes
                                         </div>
                                         <div>
                                             <p>
