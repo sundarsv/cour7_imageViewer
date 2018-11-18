@@ -87,7 +87,7 @@ class Home extends Component {
         }
     }
 
-
+    //Creating a new array, looping to find the array[index] and increase / decrease likes to that array[index]
     likesClickHandler = (id) => {
         var userImageLikes = this.state.userImages.slice(0)
         if (userImageLikes.likesIcon === <Favorite color="secondary"/>) {   
@@ -110,16 +110,13 @@ class Home extends Component {
         }
     }
 
+    //Creating a new array, looping to find the array[index] and add the comment text to that array[index]
     commentAddHandler = (id, e) => {
-        console.log(id);
-        console.log(e);
         var userImageComments = this.state.userImages.slice(0)
         for (var i=0; i<userImageComments.length; i++) {
             if (userImageComments[i].id === id) {
                 userImageComments[i].commentsText = userImageComments[i].user.username + ": " + e;
-                console.log(userImageComments[i].commentsText);
                 this.setState({userImages: userImageComments})
-                console.log(userImageComments[i].commentsText);
             }
         }
     }
