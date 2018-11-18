@@ -70,7 +70,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Header />
+                <Header baseUrl={this.props.baseUrl} />
                 <div className="login">
                     <Card className="cardStyle">
                         <CardContent>
