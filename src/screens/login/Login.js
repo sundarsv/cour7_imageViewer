@@ -60,7 +60,7 @@ class Login extends Component {
             if ("upgrad" === this.state.username && "upgrad" === this.state.password) {
                 sessionStorage.setItem("access-token", "9204272757.f8594e7.25756c2b57804b6b8b1cb08b48e45566");
                 sessionStorage.setItem("uuid", "f8594e7d52814efdb9bc81edcc43d158");
-                console.log("Set Session Storage");
+                this.props.history.push("/home");
             } else {
                 this.setState({ validatedCredentials: "dispBlock" });
             }
